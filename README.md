@@ -48,7 +48,7 @@ Greetz to Mr.Dapunta, and You♥️.
 - Trimmed unnecessary code that doesn't contribute significantly to the code's execution. (This is my mistake and not recommended to be imitated. However, it seems that Mr.Dapunta doesn't mind it, isn't it? Idk, I apologize for that.)
 
 ### ⇨ Example
-<img src="https://raw.githubusercontent.com/21sysai/21sysai/main/images/IMG_20230814_193551.jpg">
+<img src="https://raw.githubusercontent.com/21sysai/21sysai/main/images/IMG_20230815_125804.jpg">
 
 ### ⇨ End 🖐️
 ***
