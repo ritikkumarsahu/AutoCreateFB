@@ -9,7 +9,7 @@ D = "\x1b[0;00m" # NEUTRAL
 
 #--> Import Module & Run
 try :
-    import os, sys, time, re, datetime, random, urllib, json, time
+    import os, sys, time, re, datetime, random, urllib, json
     from datetime import datetime
     from realtime import timenow
     from names import random_name_US, random_name_IN, random_name_ID, random_name_RU, random_name_PK, random_name_JP, random_name_CN, random_name_ZW, random_name_ES, random_name_BR
