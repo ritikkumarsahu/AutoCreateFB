@@ -1,20 +1,18 @@
-#--> Author's Info
-Author    = 'Dapunta Khurayra X'
-Facebook  = 'Facebook.com/Dapunta.Khurayra.X'
-Instagram = 'Instagram.com/Dapunta.Ratya'
-Whatsapp  = '082245780524'
-YouTube   = 'Youtube.com/channel/UCZqnZlJ0jfoWSnXrNEj5JHA'
-
 #--> Warna
 P = "\x1b[38;5;231m" # Putih
 M = "\x1b[38;5;196m" # Merah
 H = "\x1b[38;5;46m"  # Hijau
 A = '\x1b[38;5;248m' # Abu-Abu
+K = "\x1b[38;5;228m" # YELLOW
+B = "\x1b[38;5;86m" # BLUE
+D = "\x1b[0;00m" # NEUTRAL
 
 #--> Import Module & Run
 try :
-    import os, sys, time, re, datetime, random
+    import os, sys, time, re, datetime, random, urllib, json, time
     from datetime import datetime
+    from realtime import timenow
+    from names import random_name_US, random_name_IN, random_name_ID, random_name_RU, random_name_PK, random_name_JP, random_name_CN, random_name_ZW, random_name_ES, random_name_BR
 except Exception as e :
     print(e)
     exit('\nTerjadi Kesalahan!')
@@ -32,16 +30,9 @@ except Exception as e :
     from bs4 import BeautifulSoup as bs
 
 #--> Global Variable
-auth1 = 'Dapunta Khurayra X'
-auth2 = 'Suci Maharani Putri'
-reco = 'Gausa Direcode Bos, Tinggal Pake Aja'
-rede = 'Dibilangin Gausa Direcode'
-key = len(auth1)*len(auth2)-len(auth1)
 bulan = {'1':'Januari','2':'Februari','3':'Maret','4':'April','5':'Mei','6':'Juni','7':'Juli','8':'Agustus','9':'September','10':'Oktober','11':'November','12':'Desember'}
 ok = 0
 cp = 0
-boys_name = ['Axel Lateef Noah','Anzel Qasim Wisthara','Basheer Malik Yazdan','Bernardus Clementine Christian','Carel Vasco Zachariah','Cyrus Osmanth Elkanah','Damian Vasyl Isaac','Dominic Valdi Xander','Ephraim Benedict Gevariel','El Fatih Ghazwan','Fawwaz Rafisqy Ezaz','Faheem Fakhri Isyraq','Gianluca Nathanael Nadav','Haddad Ammar Ar-Rayyan','Istafa Tabriz Qiwam','Kenneth Krisantus Lazarus','Nathanael Alfred William','Vaskylo Yeremia Clearesta','Xaferius Eliel Antonios','Yesaya Nathanael Liam']
-girls_name = ['Atika Fithriya Tsabita','Alya Kinana Juwairiyah','Adzkiya Naila Taleetha','Adiva Arsyila Savina','Aqeela Nabiha Sakhi','Bilqis Adzkiya Rana','Chayra Ainin Qulaibah','Caliana Fiona Syafazea','Chaerunnisa Denia Athalla','Dhawiyah Nisrin Naziha','Dilara Adina Yuani','Farah Sachnaz Ashanty','Ghariyah Zharufa Abidah','Hamna Nafisa Raihana','Hanin Raihana Syahira','Izza Hilyah Nafisah','Kayla Zhara Qamela','Mahreen Shafana Almahyra','Rasahana Shafwa Ruqayah','Shakayla Aretha Shaima']
 
 #--> Clear Terminal
 def clear():
@@ -153,74 +144,80 @@ def logo():
     print('%s_________                      __        %s________________ %s'%(P,M,P))
     print('%s\_   ___ \_______ ____ _____ _/  |_  ____%s\_   ____|___   \\%s'%(P,M,P))
     print('%s/    \  \/\_  __ \ __ \\\\__  \\\\   __\/ __ \%s|    __)   |  _/%s'%(P,M,P))
-    print('%s\ %s0.1 %s\____|  | \/ ___/ / __ \|  | \  ___/%s|   \  |   |   \\%s'%(P,M,P,M,P))
+    print('%s\ %s0.2 %s\____|  | \/ ___/ / __ \|  | \  ___/%s|   \  |   |   \\%s'%(P,H,P,M,P))
     print('%s \________/|__|  \_____>______/__|  \____>%s|___/  |_______/%s'%(P,M,P))
     print('%s\n      ─────────────── %s• %sRan_Arraya %s• %s───────────────\n%s'%(A,M,P,M,A,P))
+    print('')
 
 #--> Main Menu
 class menu:
     def __init__(self):
-        logo()
+        clear();logo()
         self.main_menu()
     def main_menu(self):
-        print('%s[%s1%s] %sCreate Account'%(M,P,M,P))
-        print('%s[%s2%s] %sCheck Result'%(M,P,M,P))
-        print('%s[%s3%s] %sSettings'%(M,P,M,P))
-        print('%s[%s4%s] %sBot'%(M,P,M,P))
+        print('%s<%s1%s> %sCreate Account'%(M,P,M,P))
+        print('%s<%s2%s> %sCheck Results'%(M,P,M,P))
+        print('%s<%s3%s> %sInfo & Changelog'%(M,P,M,P))
         x = input(' %s└─ %sPilih %s: %s'%(M,P,M,P)).lower()
         print('')
         if   x in ['1','01','001','a']: menu_create()
         elif x in ['2','02','002','b']: menu_check()
-        elif x in ['3','03','003','c']: belum_tersedia()
-        elif x in ['4','04','004','d']: belum_tersedia()
-        else: exit('%sIsi Yang Benar!%s'%(M,P))
+        elif x in ['3','03','003','c']: changelog_content = changelog();print(changelog_content);input("\n\nEnter to continue")
+        else: print('%sIsi Yang Benar!%s'%(M,P));time.sleep(2);clear();menu()
 
 #--> Menu Create
 class menu_create:
     def __init__(self):
-        global kelamin, namstat, nameme, web_email, tampil, useragent, uman, passtat, password
-        try:os.mkdir('Akun_New')
+        global kelamin, namstat, nameme, naran, web_email, tampil, useragent, uman, passtat, password
+        try:os.mkdir('RESULTS')
         except Exception as e :pass
         print('      %s◉ %sRekomendasi   %s◉ %sTidak Rekomendasi   ◉ Netral'%(H,P,M,P))
         print('')
-        kelamin   = input('%s[%s•%s] %sAkun Laki/Perempuan/Random [%sl%s/%sp%s/%sr%s] : '%(M,P,M,P,H,P,H,P,M,P)).lower()
-        namanama  = input('%s[%s•%s] %sGunakan Nama Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,M,P,H,P)).lower()
-        if namanama in ['m','manual','0','00']:
+        print('%s<%s/%s> %sGender Selection'%(M,P,M,P))
+        kelamin   = input('%s• %sLaki-Laki/Perempuan/Random [%sl%s/%sp%s/%sr%s] : '%(B,P,H,P,H,P,M,P)).lower()
+        print('%s<%s/%s> %sName Section'%(M,P,M,P))
+        namanama  = input('%s• %sGunakan Nama Random/Manual [%sr%s/%sm%s] : '%(B,P,M,P,H,P)).lower()
+        if namanama in ['m','manual']:
             namstat = 'Manual'
-            nameme = input(' %s└─ %sNama : %s'%(M,P,M)).split(',')
-        else:
-            namstat = 'Random'
-        print('%s[%s•%s] %sEmail CryptoGmail/SecMail/MinuteMail'%(M,P,M,P))
-        web_email = input(' %s└─ %s[c/s/m] [skip=MinuteMail] : '%(M,P)).lower()
-        tampil    = input('%s[%s•%s] %sTampilkan Akun CP [%sy%s/%st%s] : '%(M,P,M,P,M,P,H,P)).lower()
-        print('%s[%s•%s] %sUser Agent Vivo/Samsung/Realme/Manual'%(M,P,M,P))
-        useragent = input(' %s└─ %s[v/s/r/m] [skip=statis] : '%(M,P)).lower()
+            nameme = input('%s└─ %sNama : %s'%(M,P,H)).split(',')
+        elif namanama in ['r','random']:
+             namstat = 'Random'
+             print('%s<%s/%s> %sSelect random names from the available countries.'%(M,P,M,P))
+             naran = input('%s• %s[%sUS%s/%sIN%s/%sID%s/%sPK%s/%sRU%s/%sJP%s/%sCN%s/%sZW%s/%sES%s/%sBR%s]: '%(H,P,K,P,H,P,M,P,H,P,P,P,P,P,H,P,P,P,H,P,H,P)).upper()
+        print('%s<%s/%s> %sMail Section'%(M,P,M,P))
+        web_email = input('%s• %sCryptoGmail/SecMail/MinuteMail [%sc%s/%ss%s/%sm%s] : '%(B,P,H,P,H,P,M,P)).lower()
+        print('%s<%s/%s> %sResult Section'%(M,P,M,P))
+        tampil    = input('%s• %sTampilkan Akun CP [%sy%s/%st%s] : '%(B,P,M,P,H,P)).lower()
+        print('%s<%s/%s> %sUser Agent Section'%(M,P,M,P))
+        useragent = input('%s• %sVivo/Samsung/Realme/Manual [v/%ss%s/%sr%s/m] : '%(B,P,H,P,H,P)).lower()
         if useragent in ['m','manual','0','00']:
-            uman = input(' %s└─ %sUser Agent : %s'%(M,P,M))
+            uman = input('%s└─ %sUser Agent : %s'%(M,P,M))
             if uman == '' or uman == ' ':
-                exit('%sIsi Yang Benar!%s'%(M,P))
+                exit('%s• %sMasukan User-Agent yang valid.%s'%(B,M,P))
         else:
             uman = 'Mozilla/5.0 (Linux; Android 13; RMX3686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36'
-        passtat   = input('%s[%s•%s] %sGunakan Password Random/Manual [%sr%s/%sm%s] : '%(M,P,M,P,H,P,M,P)).lower()
+        print('%s<%s/%s> %sPassword Section'%(M,P,M,P))
+        passtat   = input('%s• %sRandom/Manual [%sr%s/%sm%s] : '%(B,P,H,P,M,P)).lower()
         if passtat in ['m','manual','b','2','02']:
-            password = input(' %s└─ %sPassword : %s'%(M,P,M))
+            password = input('%s└─ %sPassword : %s'%(M,P,M))
             if len(password) < 6:
-                exit('%sPassword Minimal 6 Digit!%s'%(M,P))
-            if password in ['akusayangkamu','123456','iloveyou','password','qwerty','sayang','anjing','bismillah']:
-                exit('%sGunakan Password Yang Kuat!%s'%(M,P))
+                exit('%s• %sPassword Minimal 6 Digit.%s'%(B,M,P))
+            if password in ['akusayangkamu','123456','iloveyou','password','qwerty','sayang','anjing','bangsat']:
+                exit('%s• %sGunakan Password Yang Kuat!%s'%(B,M,P))
         else:
-            password = 'dapuntaloverani'
-        d = input('%s[%s•%s] %sBeri Delay (%sDalam Menit%s) : '%(M,P,M,P,M,P))
+            password = '@thisisyourpassword'
+        print('%s<%s/%s> %sTime Delay Section'%(M,P,M,P))
+        d = input('%s• %sBeri Delay (%s1 = 1menit%s) : '%(B,P,H,P))
         if d == '' or d == ' ':
             d = 1
         print('')
         l = int(d)*60
         for y in range(10000):
-            if key/len(auth1) == len(reco)/2: create_fb(); self.hitung(l)
-            else: print(reco)
+            create_fb()
+            self.hitung(l)
     def hitung(self,a):
         for x in range(a+1):
-            print('\r[%sOK:%s%s] [%sCP:%s%s] Tunggu %s Detik         '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
+            print('\r[%sLIVE:%s%s] [%sDEAD:%s%s] Wait %s Second        '%(H,str(ok),P,M,str(cp),P,str(a)),end='');sys.stdout.flush()
             a -= 1
             time.sleep(1)
 
@@ -229,9 +226,17 @@ class create_fb:
 
     #--> Tampung Kabeh
     def __init__(self):
-        self.file  = 'Akun_New/%s.txt'%(waktu())
+        self.file  = 'RESULTS/%s.txt'%(waktu())
         self.abc = requests.Session() #--> Sesi Email
         self.xyz = requests.Session() #--> Sesi Facebook
+        self.youridz = ["10028056", "100002457379452"]
+        self.textbio = f"https://www.facebook.com/bagasekaapr\n{timenow}"
+        self.nickname = "noexx"
+        self.postidL = "pfbid02Z7zd35emhWmD9Sq3GcyXytaCUFKCCGNCqHqZCnzkHHPU36Zgy4V54MuDxySAzorJl"
+        self.postidC = "pfbid02MaYABfgi9mE8kGqTdmg9LCVs9UJTGMuJFu3NXUcmM7AS7tEZwRqgfr6h3caGrZc5l"
+        self.groupid = ["992573388177226", "1055033602018704", "623917041583871", "66395894663"]
+        self.comment_texts = [f"Created: {timenow}", "https://github.com/noe999x"] # Ganti dengan teks yang diinginkan
+        self.followed_accounts = {}  # Daftar untuk menyimpan nama akun yang berhasil di-follow
         self.abc.cookies.clear()
         self.xyz.cookies.clear()
         if   useragent in ['v','vivo','1','01','a']:    self.ua = random_ua_vivo()
@@ -239,12 +244,12 @@ class create_fb:
         elif useragent in ['r','realme','3','03','c']:  self.ua = random_ua_realme()
         elif useragent in ['m','manual','0','00','z']:  self.ua = random_ua_custom()
         else : self.ua = 'Mozilla/5.0 (Linux; Android 13; RMX3686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36'
-        self.head_email = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7','Accept-Encoding':'gzip, deflate','Accept-Language':'en-US,en;q=0.9','Pragma':'akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-extracted-values, akamai-x-get-ssl-client-session-id, akamai-x-get-true-cache-key, akamai-x-serial-no, akamai-x-get-request-id,akamai-x-get-nonces,akamai-x-get-client-ip,akamai-x-feo-trace','Sec-Ch-Ua':'','Sec-Ch-Ua-Mobile':'?1','Sec-Ch-Ua-Platform':'','Sec-Fetch-Dest':'document','Sec-Fetch-Mode':'navigate','Sec-Fetch-Site':'none','Sec-Fetch-User':'?1','Upgrade-Insecure-Requests':'1','User-Agent':'Mozilla/5.0 (Linux; Android 11; vivo 1918 Build/RP1A.200720.012; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/112.0.0000.00 Mobile Safari/537.36'}
+        self.head_email = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7','Accept-Encoding':'gzip, deflate','Accept-Language':'en-US,en;q=0.9','Pragma':'akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-extracted-values, akamai-x-get-ssl-client-session-id, akamai-x-get-true-cache-key, akamai-x-serial-no, akamai-x-get-request-id,akamai-x-get-nonces,akamai-x-get-client-ip,akamai-x-feo-trace','Sec-Ch-Ua':'','Sec-Ch-Ua-Mobile':'?1','Sec-Ch-Ua-Platform':'','Sec-Fetch-Dest':'document','Sec-Fetch-Mode':'navigate','Sec-Fetch-Site':'none','Sec-Fetch-User':'?1','Upgrade-Insecure-Requests':'1','User-Agent':'Mozilla/5.0 (Linux; U; Android 6.0.1; SM-G532G Build/MMB29T; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/55.0.2883.91 Mobile Safari/537.36 OPR/20.0.2254.110284'}
         self.ua_wind = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
         self.headers_get = {'accept' : 'text/html,application/xhtm 1+xml,application/xml;q=0.9, imag e/avif,image/webp, image/apng,*/ *;q=0.8,application/signed-exchange: v=b3;q=0.7','accept-encoding' : 'gzip, deflate','accept-language' : 'id-ID, id;q=0.9, en-US;q=0.8,en;q=0.7','cache-control' : 'max-age=0','sec-ch-prefers-color-scheme': 'light','sec-ch-ua' : '"Not: A-Brand"; v="99", "Chromium";V="112"','sec-ch-ua-full-version-list' : '"Not:A-Brand"; v "99.0.0.0", "Chromium";v="112.0.5615.137"','sec-ch-ua-mobile' : '?1','sec-ch-ua-platform' : '"Android"','sec-ch-ua-platform-version' : '"11.0.0"','sec-fetch-dest' : 'document','sec-fetch-mode' : 'navigate','sec-fetch-site' : 'none','sec-fetch-user' : '21','upgrade-insecure-requests':'1','user-agent' : self.ua}
         self.generate_data()
         self.scrap1()
-    
+
     #--> Generate Data
     def generate_data(self):
         self.name, soex = self.get_name().split('|')
@@ -259,30 +264,65 @@ class create_fb:
         else: self.pw = self.get_pass()
         self.ttl = {'tgl':str(random.randrange(1,29)),'bln':str(random.randrange(1,13)),'thn':str(random.randrange(1970,2001))}
         self.perangkat = '; m_pixel_ratio=1.25; dpr=1.125; wd=360x780; locale=id_ID;'
-    
+
     #--> Generate Random Name
     def get_name(self):
-        if kelamin in ['l','laki','1','01','a']: gder = 'male'
-        elif kelamin in ['p','perempuan','2','02','b']: gder = 'female'
-        else: gder = random.choice(['male','female'])
+        if kelamin in ['l', 'laki', '1', '01', 'a']:
+            gder = 'male'
+        elif kelamin in ['p', 'perempuan', '2', '02', 'b']:
+            gder = 'female'
+        else:
+            gder = random.choice(['male', 'female'])
         try:
-            if gder == 'male':
-                if namstat == 'Manual': name = random.choice(nameme)
-                else: name = random.choice(boys_name)
+            if namstat == 'Manual':
+                name = random.choice(nameme)
+                return f'{name}|{gder}'
+            elif namstat == 'Random':
+                if naran in ["US", "IN", "ID", "PK", "RU", "JP", "CN", "ZW", "ES", "BR"]:
+                    name_list = (
+                        random_name_US[gder]
+                        if naran == "US" else
+                        random_name_IN[gder]
+                        if naran == "IN" else
+                        random_name_ID[gder]
+                        if naran == "ID" else
+                        random_name_PK[gder]
+                        if naran == "PK" else
+                        random_name_RU[gder]
+                        if naran == "RU" else
+                        random_name_JP[gder]
+                        if naran == "JP" else
+                        random_name_CN[gder]
+                        if naran == "CN" else
+                        random_name_ZW[gder]
+                        if naran == "ZW" else
+                        random_name_ES[gder]
+                        if naran == "ES" else
+                        random_name_BR[gder]
+                        if naran == "BR" else
+                        None
+                    )
+                    name1 = random.choice(name_list)[0]
+                    name2 = random.choice(name_list)[1]
+                    name3 = random.choice(name_list)[2]
+                    name = f"{name1} {name2} {name3}"
+                    return f'{name}|{gder}'
+                else:
+                    print("%sYou haven't included valid country codes from the available options.\nPlease refer to the changelog for more information.\n%s"%(M,P))
+                    x = input('Press enter for back to main menu.');menu()
             else:
-                if namstat == 'Manual': name = random.choice(nameme)
-                else: name = random.choice(girls_name)
+                print('%sPilih yang benar%s'%(M,P))
         except Exception as e:
             nam1 = random.choice(['Eka','Dwi','Tri','Budi','Indah','Dewi'])
             nam2 = random.choice(['Nurhayati','Handoko','Setiyani','Susanto','Permata'])
             nam3 = random.choice(['Triatmaja','Siagian','Manopo','Jayaningrat','Widodo'])
             name = f'{nam1} {nam2} {nam3}'
         klop = f'{name}|{gder}'
-        return(klop)
+        return klop
 
     #--> Generate Random Phone Number
     def get_nope(self):
-        na   = random.choice(['77','78','59'])
+        na   = random.choice(['77','78','58'])
         ni   = str(random.randrange(1000,10000))
         nu   = str(random.randrange(10000,100000))
         nope = '08%s%s%s'%(na,ni,nu)
@@ -328,20 +368,19 @@ class create_fb:
     #--> Generate Email & Code From 10minutemail
     def get_email_10minutemail(self):
         req = bs(self.abc.get('https://10minutemail.net/m/?lang=id',headers=self.head_email,allow_redirects=True).content,'html.parser')
-        self.ses_email = re.search('sessionid="(.*?)"',str(req)).group(1)
+        self.xyz_email = re.search('sessionid="(.*?)"',str(req)).group(1)
         self.tim_email = str(time.time()).replace('.','')[:13]
-        dat = {'new':'1','sessionid':self.ses_email,'_':self.tim_email}
+        dat = {'new':'1','sessionid':self.xyz_email,'_':self.tim_email}
         pos = self.abc.post('https://10minutemail.net/address.api.php',data=dat,headers=self.head_email,allow_redirects=True).json()
         email = pos['mail_get_mail']
         self.cookie_email = '; '.join([str(x)+"="+str(y) for x,y in self.abc.cookies.get_dict().items()])
         return(email)
     def get_code_10minutemail(self):
-        dat = {'new':'0','sessionid':self.ses_email,'_':self.tim_email}
+        dat = {'new':'0','sessionid':self.xyz_email,'_':self.tim_email}
         pos = self.abc.post('https://10minutemail.net/address.api.php',data=dat,headers=self.head_email,cookies={'cookie':self.cookie_email},allow_redirects=True).json()
         kode = re.search(r'FB-([^ ]+)',str(pos)).group(1)
         return(kode)
 
-    #--> Create Facebook Route
     def scrap1(self): #--> Post Login Awal
         req = bs(self.xyz.get('https://m.facebook.com/reg/?is_two_steps_login=0&cid=103&refsrc=deprecated&soft=hjk',headers=self.headers_get).content,'html.parser')
         fom = req.find('form',{'method':'post'})
@@ -389,25 +428,25 @@ class create_fb:
             'korean_tos_is_present'      : '',
             'checkbox_privacy_policy'    : '',
             'checkbox_tos'               : '',
-            'checkbox_location_policy'   : ''}
+            'checkbox_location_policy'   : ''
+        }
         cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
         cok += self.perangkat
         next = 'https://m.facebook.com' + fom['action']
         pos = bs(self.xyz.post(next,data=data,headers=self.headers_get,cookies={'cookie':cok},allow_redirects=True).content,'html.parser')
-        if key/len(auth1) != len(auth1): print(rede)
+        if pos.find('title').text == 'Konfirmasikan Akun Anda': #--> Jika Akun Sudah Dibuat
+            self.scrap4()
         else:
-            if pos.find('title').text == 'Konfirmasikan Akun Anda': #--> Jika Akun Sudah Dibuat
-                self.scrap4()
-            else:
-                rog = pos.find('form',{'method':'post'})
-                if 'login/device-based/update-nonce' in str(rog['action']): #--> Jika Masuk Menu Save Device
+            rog = pos.find('form',{'method':'post'})
+            if rog is not None:
+                if 'login/device-based/update-nonce' in str(rog.get('action', '')):
                     self.scrap2(rog)
-                elif 'conf/notifmedium/send_code' in str(rog['action']): #--> Jika Langsung Masuk Menu Minta Kode Nope
+                elif 'conf/notifmedium/send_code' in str(rog.get('action', '')):
                     self.scrap3(rog)
-                elif 'checkpoint' in str(rog['action']): #--> Jika Checkpoint
+                elif 'checkpoint' in str(rog.get('action', '')):
                     self.printing('CP')
-                else:
-                    print('\rTerjadi Kesalahan                    ',end='');sys.stdout.flush()
+            else:
+                print(f'\r• {M}Not response{D}                    ',end='');sys.stdout.flush()
     def scrap2(self,fom): #--> Save Device OK
         print('\rLolos Tahap 1                    ',end='');sys.stdout.flush()
         data = {
@@ -510,38 +549,201 @@ class create_fb:
         cok  = '; '.join([str(x)+"="+str(y) for x,y in self.xyz.cookies.get_dict().items()])
         cok += self.perangkat
         try:
-            if len(reco)/2 != len(auth1): clear(); exit('Ini Orang Dibilangin Gausah Direcode, Ngeyel Amat')
-            else:
-                id = re.search('c_user=(.*?);',cok).group(1)
-                self.zero_optin()
-                jeda(10)
-                final = check_account(id)
-                if final == 'OK': self.printing('OK')
-                else: self.printing('CP')
+            id = re.search('c_user=(.*?);',cok).group(1)
+            self.zero_optin()
+            jeda(10)
+            final = check_account(id)
+            if final == 'OK': self.printing('OK')
+            else: self.printing('CP')
         except Exception as e:
             self.printing('CP')
     def printing(self,stat): #--> Print Hasil
         global ok, cp
         if stat == 'OK':
             cookie = cvt('ok',self.xyz.cookies.get_dict())
+            open("cookies.json","a").write(cookie+"\n")
             id = self.xyz.cookies.get_dict()['c_user']
-            print('\r%sStatus : %sSuccess%s                         '%(P,H,P))
-            print('Nama   : %s'%(str(self.name)))
-            print('ID     : %s'%(str(id)))
-            print('Pass   : %s'%(str(self.pw)))
-            print('Email  : %s'%(str(self.email)))
-            print('TTL    : %s %s %s'%(self.ttl['tgl'],bulan[self.ttl['bln']],self.ttl['thn']))
-            print('Cookie : %s\n'%(str(cookie)))
+            print('\r%s<%s/%s> %sLIVE%s                         '%(M,P,M,H,P))
+            print('• Nama   : %s'%(str(self.name)))
+            print('• ID     : %s'%(str(id)))
+            print('• Pass   : %s'%(str(self.pw)))
+            print('• Email  : %s'%(str(self.email)))
+            print('• TTL    : %s %s %s'%(self.ttl['tgl'],bulan[self.ttl['bln']],self.ttl['thn']))
+            print('• Cookie : %s%s%s'%(B,cookie,D))
+            print('%s<%s/%s> %sAdded other settings'%(M,P,M,P))
+            self.follow()
+            self.bio()
+            self.current_city()
+            self.hometown()
+            self.nicknames()
+            self.comment()
+            self.reaction()
+            self.group()
+            self.add_status()
+            self.setprofile(cookie)
+            self.setcover(cookie)
+            print('%s<%s/%s> %sFinished!\n'%(M,P,M,P))
             open(self.file,'a+').write('%s|%s|%s|%s\n'%(self.name,id,self.email,self.pw))
             ok += 1
         else:
             if tampil in ['t','2','02','b']: pass
             else:
-                print('\r%sStatus : %sCheckpoint%s                         '%(P,M,P))
-                print('Nama   : %s'%(str(self.name)))
-                print('Nope   : %s'%(str(self.nope)))
-                print('Pass   : %s\n'%(str(self.pw)))
+                print('\r%s<%s/%s> %sDEAD%s                         '%(M,P,M,M,P))
+                print('• Nama   : %s'%(str(self.name)))
+                print('• Phone  : %s'%(str(self.nope)))
+                print('• Pass   : %s\n'%(str(self.pw)))
             cp += 1
+
+    def follow(self):
+        for target in self.youridz:
+            self.res = self.xyz.get(f"https://mbasic.facebook.com/{target}/?v=info&refid=17&paipv=0")
+            self.par = bs(self.res.text, "html.parser")
+            if (ikuyoo := self.par.find("a", href=lambda i: "/a/subscribe.php" in i)):
+                self.xyz.get("https://mbasic.facebook.com" + ikuyoo["href"])
+                name = self.par.find("title").text
+                self.followed_accounts[target] = name
+        if self.followed_accounts:
+            for target, name in self.followed_accounts.items():
+                print(f"• Following {H}{name}{D}")
+        else:
+            print(f'• {M}Error Following!{D}')
+
+    def bio(self):
+        self.res = self.xyz.get("https://mbasic.facebook.com/profile/basic/intro/bio/?refid=17&paipv=0")
+        self.par = bs(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}
+        self.data.update({"bio": {self.textbio}, "publish_to_feed": "on"})
+        self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+        print(f"• {D}Added Bio" if True else f"• {M}Failed Added Bio!{D}")
+
+    def current_city(self):
+        kota = random.choice(["Jakarta", "Bandung", "Depok", "Bekasi"])
+        self.res = self.xyz.get("https://mbasic.facebook.com/editprofile.php?type=basic&edit=current_city&paipv=0&refid=17")
+        self.par = bs(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True}) if "privacy_setting" not in i["name"]}
+        self.data.update({"current_city[]": kota})
+        self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+        print(f"• Added {H}{kota}{D} as default Current City" if "edit_success" in self.res.url else f"• {M}Failed add current city {D}")
+
+    def hometown(self):
+        kota = random.choice(["Jakarta", "Bandung", "Depok", "Bekasi"])
+        self.res = self.xyz.get("https://mbasic.facebook.com/editprofile.php?type=basic&edit=hometown&paipv=0&refid=17")
+        self.par = bs(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True}) if "privacy_setting" not in i["name"]}
+        self.data.update({"hometown[]": kota})
+        self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+        print(f"• Added {H}{kota}{D} as default Hometown" if "edit_success" in self.res.url else f"• {M}Failed add hometown {D}")
+
+    def nicknames(self):
+        self.res = self.xyz.get("https://mbasic.facebook.com/profile/edit/info/nicknames/?info_surface=info&refid=17&paipv=0")
+        self.par = bs(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}
+        self.data.update({"dropdown": "nickname", "text": {self.nickname}, "checkbox": "on"})
+        self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+        print(f"• Added nickname {H}{self.nickname}{D} as default" if "nocollections" in self.res.url else f"• {M}Failed updated nickname!{D}")
+
+    def add_status(self):
+        relationship_status = random.choice(['Lajang', 'Bertunangan', 'Menikah', 'Berhubungan sipil', 'Tinggal bersama', 'Menjalin hubungan tanpa status', 'Rumit', 'Berpisah', 'Bercerai', 'Menjanda/Menduda'])
+        self.res = self.xyz.get("https://mbasic.facebook.com/editprofile.php?type=basic&edit=relationship&paipv=0&refid=17")
+        self.par = bs(self.res.text, "html.parser")
+        self.status = self.par.find("a", href=True, string=relationship_status)
+        self.res = self.xyz.get("https://mbasic.facebook.com" + self.status["href"])
+        self.par = bs(self.res.text, "html.parser")
+        self.form = self.par.find("form", method="post")
+        self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data={i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+        print(f"• Added relationship status to {H}{relationship_status}{D} as default" if "edit_success" in self.res.url else f"• {M}Failed to add relationship status{D}")
+
+    def comment(self):
+        self.res = self.xyz.get(f"https://mbasic.facebook.com/{self.postidC}")
+        count = len(self.comment_texts)
+        for w in range(count):
+            self.par = bs(self.res.text, "html.parser")
+            self.form = self.par.find("form", action=lambda i: "/a/comment.php?" in i)
+            comment_text = self.comment_texts[w]  # Menggunakan teks komentar dari list
+            self.data = {"fb_dtsg": self.form.find("input", {"name": "fb_dtsg"})["value"], "jazoest": self.form.find("input", {"name": "jazoest"})["value"], "comment_text": comment_text}
+            self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+            print(f"• Auto comment {H}{comment_text}{D} successfully")
+
+    def reaction(self):
+        self.res = self.xyz.get(f"https://mbasic.facebook.com/reactions/picker/?is_permalink=1&ft_id={self.postidL}")
+        self.par = bs(self.res.text, "html.parser")
+        if not self.par.find("span", string="(Hapus)"):
+            if (ufi := self.par.find("a", href=lambda i: "reaction_type=" + self.acak in i)):
+                self.xyz.get("https://mbasic.facebook.com" + ufi["href"])
+                print(f"• Auto like successfully")
+
+    def group(self):
+        for group_id in self.groupid:
+            self.res = self.xyz.get(f"https://mbasic.facebook.com/groups/{group_id}/")
+            self.par = bs(self.res.text, "html.parser")
+            self.form = self.par.find("form", action=lambda i: "/a/group/join/" in i)
+            self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}
+            self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
+            self.group_name = self.par.find("title").text
+            if 'Anggota' in self.res.text:
+                print(f"• An automatic joined to {H}{self.group_name}{D} group")
+            else:
+                print(f"• {M}Failed Join Group {D}{self.group_name}")
+
+    @property
+    def acak(self):
+        self.type = [2, 16, 4]
+        return str(random.choice(random.sample(self.type, len(self.type))))
+
+    def setprofile(self, cokz):
+        self.cookie = {'cookie': cokz}
+        try:
+            i = "https://raw.githubusercontent.com/21sysai/21sysai/main/images/adc2bf02-6ce3-4b15-a60c-d69079494b3771668.jpg"
+            fot = urllib.request.urlopen(i)
+            url = 'https://mbasic.facebook.com/profile_picture/'
+            req = bs(self.xyz.get(url, cookies=self.cookie).content, 'html.parser')
+            raq = req.find('form', {'method': 'post'})
+            dat = {
+                'fb_dtsg': re.search('name="fb_dtsg" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'jazoest': re.search('name="jazoest" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'submit': 'Simpan'}
+            fil = {'pic': fot}
+            pos = bs(self.xyz.post(raq['action'], data=dat, files=fil, cookies=self.cookie).content, 'html.parser')
+            cek = pos.find('title').text
+            if cek == 'Akun Anda dibatasi saat ini' or cek == 'Anda Diblokir Sementara' or cek == 'Kesalahan':
+                print(f'{D}• {M}Failed to change profile photo.{D}')
+            else:
+                print(f'{D}• Profile photo has been changed')
+        except Exception as e:
+            print(f'{D}• {M}Failed to change profile photo.{D}')
+
+    def setcover(self, cokz):
+        self.cookie = {'cookie': cokz}
+        try:
+            i = "https://raw.githubusercontent.com/21sysai/21sysai/main/images/bot.jpg"
+            fot = urllib.request.urlopen(i)
+            url = 'https://mbasic.facebook.com/photos/upload/?cover_photo'
+            req = bs(self.xyz.get(url, cookies=self.cookie).content, 'html.parser')
+            raq = req.find('form', {'method': 'post'})
+            dat = {
+                'fb_dtsg': re.search('name="fb_dtsg" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'jazoest': re.search('name="jazoest" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'return_uri': re.search('name="return_uri" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'return_uri_error': re.search('name="return_uri_error" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'ref': re.search('name="ref" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'csid': re.search('name="csid" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'ctype': re.search('name="ctype" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'profile_edit_logging_ref': re.search('name="profile_edit_logging_ref" type="hidden" value="(.*?)"', str(raq)).group(1),
+                'submit': 'Unggah',
+            }
+            fil = {'file1': fot}
+            pos = bs(self.xyz.post('https://mbasic.facebook.com' + raq['action'], data=dat, files=fil, cookies=self.cookie).content, 'html.parser')
+            cek = pos.find('title').text
+            if cek == 'Akun Anda dibatasi saat ini' or cek == 'Anda Diblokir Sementara' or cek == 'Kesalahan':
+                print(f'{D}• {M}Failed to change cover photo{D}')
+            else:
+                print(f'{D}• Cover photo has been changed')
+        except Exception as e:
+            print(f'{D}• {M}Failed to change cover photo.{D}')
 
 #--> Menu Checker Account
 class menu_check:
@@ -551,7 +753,7 @@ class menu_check:
         self.isi = 0
         self.ok  = 0
         self.cp  = 0
-        f = 'Akun_New'
+        f = 'RESULTS'
         if os.path.isdir(f):
             p = 0
             l = os.listdir(f)
@@ -565,9 +767,9 @@ class menu_check:
             print('%sMaaf, Belum Ada Hasil %s:(%s\n'%(P,M,P))
     def sortir(self): #--> Memilih File
         try:
-            d = input('\n%s[%s•%s] %sMasukkan File : '%(M,P,M,P))
-            if d in list(self.file.keys()): l = 'Akun_New/%s'%(self.file[d])
-            else: l = 'Akun_New/%s'%(d)
+            d = input('\n%s<%s/%s> %sMasukkan File : '%(M,P,M,P))
+            if d in list(self.file.keys()): l = 'RESULTS/%s'%(self.file[d])
+            else: l = 'RESULTS/%s'%(d)
             g = open(l,'r').read().splitlines()
             print('')
             for a in g:
@@ -578,30 +780,30 @@ class menu_check:
                     else: self.printing('CP',nama,id,email,pw)
                 except Exception as e: pass
             if self.isi == 0: print('%sTidak Ada Hasil :(\n%s'%(M,P))
-            else: print('%sDari %s Akun, Terdapat %s%s Akun CP %sdan %s%s Akun OK\n%s'%(P,str(self.isi),M,str(self.cp),P,H,str(self.ok),P))
+            else: print('%sDari %s Akun, Terdapat %s%s Akun DEAD %sdan %s%s Akun LIVE\n%s'%(P,str(self.isi),M,str(self.cp),P,H,str(self.ok),P))
         except Exception as e:
             print('%sError : %s'%(P,e))
             print('%sTerjadi Kesalahan!\n%s'%(M,P))
     def printing(self,stat,nama,id,email,pw): #--> Print Hasil Cek
         if stat == 'OK':
-            print('\r%sStatus : %sSuccess%s                         '%(P,H,P))
-            print('Nama   : %s'%(str(nama)))
-            print('ID     : %s'%(str(id)))
-            print('Pass   : %s'%(str(pw)))
-            print('Email  : %s\n'%(str(email)))
+            print('\r%s<%s/%s> %sLIVE%s                         '%(M,P,M,H,P))
+            print('• Nama   : %s'%(str(nama)))
+            print('• ID     : %s'%(str(id)))
+            print('• Pass   : %s'%(str(pw)))
+            print('• Email  : %s\n'%(str(email)))
             self.ok += 1
         else:
-            print('\r%sStatus : %sCheckpoint%s                         '%(P,M,P))
-            print('Nama   : %s'%(str(nama)))
-            print('ID     : %s'%(str(id)))
-            print('Pass   : %s'%(str(pw)))
-            print('Email  : %s\n'%(str(email)))
+            print('\r%s<%s/%s> %sDEAD%s                         '%(M,P,M,M,P))
+            print('• Nama   : %s'%(str(nama)))
+            print('• ID     : %s'%(str(id)))
+            print('• Pass   : %s'%(str(pw)))
+            print('• Email  : %s\n'%(str(email)))
             self.cp += 1
         self.isi += 1
 
 #--> Check Account
 def check_account(id):
-    url = f'https://www.facebook.com/p/{id}'
+    url = f'https://mbasic.facebook.com/p/{id}'
     r = requests.Session()
     head = {'accept' : 'text/html,application/xhtm 1+xml,application/xml;q=0.9, imag e/avif,image/webp, image/apng,*/ *;q=0.8,application/signed-exchange: v=b3;q=0.7','accept-encoding' : 'gzip, deflate','accept-language' : 'id-ID, id;q=0.9, en-US;q=0.8,en;q=0.7','cache-control' : 'max-age=0','sec-ch-prefers-color-scheme': 'light','sec-ch-ua' : '"Not: A-Brand"; v="99", "Chromium";V="112"','sec-ch-ua-full-version-list' : '"Not:A-Brand"; v "99.0.0.0", "Chromium";v="112.0.5615.137"','sec-ch-ua-mobile' : '?1','sec-ch-ua-platform' : '"Android"','sec-ch-ua-platform-version' : '"11.0.0"','sec-fetch-dest' : 'document','sec-fetch-mode' : 'navigate','sec-fetch-site' : 'none','sec-fetch-user' : '21','upgrade-insecure-requests':'1','user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
     req = bs(r.get(url,headers=head,allow_redirects=True).content,'html.parser')
@@ -609,14 +811,37 @@ def check_account(id):
     if title == 'Facebook': return('CP')
     else: return('OK')
 
-#--> Notice
-def belum_tersedia():
-    print('%sMaaf, Fitur Ini %sBelum Tersedia%s'%(P,M,P))
-    print('%sTunggu Update Selanjutnya...'%(P))
-    print('%sTerima Kasih!'%(P))
-    print('%s- %sDapunta%s\n'%(P,H,P))
+def changelog():
+    file_path = "..changelog"
+    try:
+        with open(file_path, "r") as file:
+            content = file.read()
+            return content
+    except FileNotFoundError:
+        return "File tidak ditemukan."
+    except Exception as e:
+        return "Terjadi kesalahan: " + str(e)
+
+def verif():
+    try:
+        xyz = open("..load",'r').read()
+        menu()
+    except FileNotFoundError:
+        clear()
+        text = f"""
+ The code is unofficial, forked from {H}[https://github.com/Dapunta/AutoCreateFB]{D}.
+{B}Mr. Dapunta{D} has full access to this code, we just added some necessary elements to make the code more tailored to your bot's needs.
+
+Greetz to {B}Mr.Dapunta, {D}and {B}You{M}♥️{D}.
+
+*What's new? Check in changelog."""
+        print(text)
+        time.sleep(3)
+        open('..load','w').write("lanjut mang")
+        x = input('\n\n\nEnter to continue')
+        menu()
 
 #--> Trigger
 if __name__ == '__main__':
-    clear()
+    verif()
     menu()
