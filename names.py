@@ -1,5 +1,3 @@
-import random
-
 #--> US Name
 random_name_US = {
     'male': [
@@ -219,28 +217,28 @@ random_name_ZW = {
 #--> Spain Name
 random_name_ES = {
     'male': [
-        ('Santiago', 'García', 'Martínez'),
-        ('Mateo', 'Hernández', 'Rodríguez'),
-        ('Sebastián', 'López', 'Fernández'),
-        ('Adrián', 'Martín', 'Pérez'),
-        ('Nicolás', 'Jiménez', 'Sánchez'),
+        ('Santiago', 'Garcia', 'Martinez'),
+        ('Mateo', 'Hernandez', 'Rodriguez'),
+        ('Sebastian', 'Lopez', 'Fernandez'),
+        ('Adrian', 'Martin', 'Perez'),
+        ('Nicolas', 'Jimenez', 'Sanchez'),
         ('Leo', 'Ruiz', 'Torres'),
-        ('Diego', 'González', 'Ramírez'),
-        ('Daniel', 'Díaz', 'Navarro'),
+        ('Diego', 'Gonzalez', 'Ramirez'),
+        ('Daniel', 'Diaz', 'Navarro'),
         ('Hugo', 'Serrano', 'Vargas'),
-        ('Iván', 'Vega', 'Ortega')
+        ('Ivan', 'Vega', 'Ortega')
     ],
     'female': [
-        ('Sofía', 'Gómez', 'Herrera'),
+        ('Sofia', 'Gomez', 'Herrera'),
         ('Valentina', 'Santos', 'Silva'),
-        ('Isabella', 'Torres', 'López'),
-        ('Emma', 'Vargas', 'Ramírez'),
-        ('Lucía', 'Castro', 'García'),
-        ('María', 'Cruz', 'Martínez'),
-        ('Martina', 'Fernández', 'Ortega'),
-        ('Valeria', 'Pérez', 'Jiménez'),
-        ('Renata', 'Morales', 'González'),
-        ('Camila', 'Ramos', 'Sánchez')
+        ('Isabella', 'Torres', 'Lopez'),
+        ('Emma', 'Vargas', 'Ramirez'),
+        ('Lucia', 'Castro', 'Garcia'),
+        ('Maria', 'Cruz', 'Martinez'),
+        ('Martina', 'Fernandez', 'Ortega'),
+        ('Valeria', 'Perez', 'Jimenez'),
+        ('Renata', 'Morales', 'Gonzalez'),
+        ('Camila', 'Ramos', 'Sanchez')
     ]
 }
 #--> Brazil Name
