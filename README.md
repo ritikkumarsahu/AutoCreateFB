@@ -5,7 +5,7 @@ $ apt upgrade
 $ termux-setup-storage  
    • Enter  
    • Ketik y Atau Pilih Izinkan
-$ pip install python
+$ pkg install python
 $ pkg install git
 $ git clone https://github.com/noe999x/AutoCreateFB
 ```
