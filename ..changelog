@@ -7,6 +7,35 @@ Greetz to Mr.Dapunta, and You<3.
 
 
 ### Changelog:
+**29 August 2023**
+
+- Added 2 lists of countries that generate random names:
+  - Vietnam                  [VN]
+  - Philippines              [PH]
+  (If you attempt to add random names from countries or lists of your own, make sure to import the key names from your `names.py` into the main `create.py` code.)
+
+- When the code executes phone numbers for account registration, I've added new phone numbers from 3 countries:
+  - +1    [USA]
+  - +91   [INDIA]
+  - +880  [BANGLADESH]
+  (Implementing changes and additions to this new code doesn't make significant alterations; I'm merely introducing more varied elements.)
+
+- Modified the password generation function, which no longer employs random values as the account password. Now, the function generates a random password based on the account name, followed by random numbers.
+  - Password example: `@accountname666`
+
+- Made changes to the images used for profile and cover photos of successfully created accounts.
+  - You can modify the URL `https://picsum.photos/` to create profile and cover images of your own.
+
+- Adjusted some lines of code.
+  - The code will automatically execute when you inadvertently input characters other than numbers in the delay section.
+    - Replace `input` with `int(input`.
+  - When attempting to recheck a successfully created account, you may have encountered issues with the code not functioning as intended.
+    - Therefore, I've made the `title` being searched for more specific during the recheck of "RESULTS" accounts, and this issue should now be resolved.
+  - etc.
+
+- Removed `realtime.py` as I believed it was a flaw that needed to be eliminated.
+
+***15 August 2023***
 - Fixed several TypeError issues: 'NoneType' object is not subscriptable.
 
 - Added several additional customized account activity elements to make the output appear more lively. (You can adjust the bot's target settings in the source code to suit your needs.)

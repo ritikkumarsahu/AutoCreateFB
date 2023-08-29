@@ -11,8 +11,7 @@ D = "\x1b[0;00m" # NEUTRAL
 try :
     import os, sys, time, re, datetime, random, urllib, json
     from datetime import datetime
-    from realtime import timenow
-    from names import random_name_US, random_name_IN, random_name_ID, random_name_RU, random_name_PK, random_name_JP, random_name_CN, random_name_ZW, random_name_ES, random_name_BR
+    from names import random_name_US, random_name_IN, random_name_ID, random_name_RU, random_name_PK, random_name_JP, random_name_CN, random_name_ZW, random_name_ES, random_name_BR, random_name_VN, random_name_PH
 except Exception as e :
     print(e)
     exit('\nTerjadi Kesalahan!')
@@ -33,6 +32,8 @@ except Exception as e :
 bulan = {'1':'Januari','2':'Februari','3':'Maret','4':'April','5':'Mei','6':'Juni','7':'Juli','8':'Agustus','9':'September','10':'Oktober','11':'November','12':'Desember'}
 ok = 0
 cp = 0
+susukeqing = random.choice([1, 2, 3])
+susuganyu = random.randint(10**(susukeqing-1), 10**susukeqing-1 - 1)
 
 #--> Clear Terminal
 def clear():
@@ -183,7 +184,7 @@ class menu_create:
         elif namanama in ['r','random']:
              namstat = 'Random'
              print('%s<%s/%s> %sSelect random names from the available countries.'%(M,P,M,P))
-             naran = input('%s• %s[%sUS%s/%sIN%s/%sID%s/%sPK%s/%sRU%s/%sJP%s/%sCN%s/%sZW%s/%sES%s/%sBR%s]: '%(H,P,K,P,H,P,M,P,H,P,P,P,P,P,H,P,P,P,H,P,H,P)).upper()
+             naran = input('%s• %s[%sUS%s/%sIN%s/%sID%s/%sPK%s/%sRU%s/%sJP%s/%sCN%s/%sZW%s/%sES%s/%sBR%s/%sVN%s/%sPH%s]: '%(H,P,M,P,M,P,K,P,H,P,P,P,H,P,K,P,P,P,H,P,K,P,H,P,H,P)).upper()
         print('%s<%s/%s> %sMail Section'%(M,P,M,P))
         web_email = input('%s• %sCryptoGmail/SecMail/MinuteMail [%sc%s/%ss%s/%sm%s] : '%(B,P,H,P,H,P,M,P)).lower()
         print('%s<%s/%s> %sResult Section'%(M,P,M,P))
@@ -207,8 +208,9 @@ class menu_create:
         else:
             password = '@thisisyourpassword'
         print('%s<%s/%s> %sTime Delay Section'%(M,P,M,P))
-        d = input('%s• %sBeri Delay (%s1 = 1menit%s) : '%(B,P,H,P))
-        if d == '' or d == ' ':
+        try:
+            d = int(input('%s• %sBeri Delay (%s1 = 1 menit%s) : '%(B,P,H,P)))
+        except ValueError:
             d = 1
         print('')
         l = int(d)*60
@@ -230,13 +232,13 @@ class create_fb:
         self.abc = requests.Session() #--> Sesi Email
         self.xyz = requests.Session() #--> Sesi Facebook
         self.youridz = ["10028056", "100002457379452"]
-        self.textbio = f"https://www.facebook.com/bagasekaapr\n{timenow}"
-        self.nickname = "noexx"
         self.postidL = "pfbid02Z7zd35emhWmD9Sq3GcyXytaCUFKCCGNCqHqZCnzkHHPU36Zgy4V54MuDxySAzorJl"
-        self.postidC = "pfbid02MaYABfgi9mE8kGqTdmg9LCVs9UJTGMuJFu3NXUcmM7AS7tEZwRqgfr6h3caGrZc5l"
+        self.postidC = "pfbid02Z7zd35emhWmD9Sq3GcyXytaCUFKCCGNCqHqZCnzkHHPU36Zgy4V54MuDxySAzorJl"
         self.groupid = ["992573388177226", "1055033602018704", "623917041583871", "66395894663"]
-        self.comment_texts = [f"Created: {timenow}", "https://github.com/noe999x"] # Ganti dengan teks yang diinginkan
-        self.followed_accounts = {}  # Daftar untuk menyimpan nama akun yang berhasil di-follow
+        self.followed_accounts = {}
+        self.susukafka = "https://picsum.photos/400"
+        self.susunahida = f"https://picsum.photos/id/{susuganyu}/600/263"
+        self.textbio = f"Created : {waktu()}"
         self.abc.cookies.clear()
         self.xyz.cookies.clear()
         if   useragent in ['v','vivo','1','01','a']:    self.ua = random_ua_vivo()
@@ -253,7 +255,7 @@ class create_fb:
     #--> Generate Data
     def generate_data(self):
         self.name, soex = self.get_name().split('|')
-        self.nope  = self.get_nope()
+        self.nope = random.choice([self.getnumbd(), self.getnumid(), self.getnumin(), self.getnumus()])
         if   web_email in ['c','cryptogmail','1','01','a']: self.email = self.get_email_cryptogmail()
         elif web_email in ['s','secmail','2','02','b']:     self.email = self.get_email_onesecmail()
         elif web_email in ['m','minutemail','4','04','d']:  self.email = self.get_email_10minutemail()
@@ -261,7 +263,7 @@ class create_fb:
         if soex == 'male' : self.sex = '2'
         else : self.sex = '1'
         if passtat in ['m','manual','b','2','02']: self.pw = password
-        else: self.pw = self.get_pass()
+        else: self.pw = self.get_pass(self.name)
         self.ttl = {'tgl':str(random.randrange(1,29)),'bln':str(random.randrange(1,13)),'thn':str(random.randrange(1970,2001))}
         self.perangkat = '; m_pixel_ratio=1.25; dpr=1.125; wd=360x780; locale=id_ID;'
 
@@ -278,7 +280,7 @@ class create_fb:
                 name = random.choice(nameme)
                 return f'{name}|{gder}'
             elif namstat == 'Random':
-                if naran in ["US", "IN", "ID", "PK", "RU", "JP", "CN", "ZW", "ES", "BR"]:
+                if naran in ["US", "IN", "ID", "PK", "RU", "JP", "CN", "ZW", "ES", "BR", "VN", "PH"]:
                     name_list = (
                         random_name_US[gder]
                         if naran == "US" else
@@ -300,6 +302,10 @@ class create_fb:
                         if naran == "ES" else
                         random_name_BR[gder]
                         if naran == "BR" else
+                        random_name_VN[gder]
+                        if naran == "VN" else
+                        random_name_PH[gder]
+                        if naran == "PH" else
                         None
                     )
                     name1 = random.choice(name_list)[0]
@@ -321,20 +327,32 @@ class create_fb:
         return klop
 
     #--> Generate Random Phone Number
-    def get_nope(self):
-        na   = random.choice(['77','78','58'])
+    def getnumin(self): #India
+        na   = random.choice(['74', '90', '91', '75', '97', '98', '99'])
+        ni   = str(random.randrange(10000000, 100000000))
+        nope = '+91%s%s'%(na, ni)
+        return(nope)
+    def getnumbd(self): #Bangladesh
+        na   = random.choice(['13', '14', '15'])
+        ni   = str(random.randrange(10000000, 100000000))
+        nope = '+880%s%s'%(na, ni)
+        return(nope)
+    def getnumid(self): #Indonesia
+        na   = random.choice(['96','78','21'])
         ni   = str(random.randrange(1000,10000))
-        nu   = str(random.randrange(10000,100000))
-        nope = '08%s%s%s'%(na,ni,nu)
+        nu   = str(random.randrange(1000,10000))
+        nope = '+628%s%s%s'%(na, ni, nu)
+        return(nope)
+    def getnumus(self): #USA
+        na   = random.choice(["225", "209", "201", "812", "204", "709", "647", "306", "613", "250", "902"])
+        ni   = str(random.randrange(1000000, 10000000))
+        nope = '+1%s%s'%(na, ni)
         return(nope)
 
     #--> Generate Random Password
-    def get_pass(self):
-        up = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        lw = up.lower()
-        nb = '0123456789'
-        ch = up + lw + nb
-        pw = ''.join(random.choice(ch) for _ in range(12))
+    def get_pass(self, nama):
+        angka = random.randrange(100000, 1000000)
+        pw = f"@{nama}{angka}".replace(" ", "")
         return(pw.lower())
 
     #--> Generate Email & Code From Cryptogmail
@@ -565,9 +583,10 @@ class create_fb:
             id = self.xyz.cookies.get_dict()['c_user']
             print('\r%s<%s/%s> %sLIVE%s                         '%(M,P,M,H,P))
             print('• Nama   : %s'%(str(self.name)))
-            print('• ID     : %s'%(str(id)))
+            print('• UID    : %s'%(str(id)))
             print('• Pass   : %s'%(str(self.pw)))
             print('• Email  : %s'%(str(self.email)))
+            print('• Phone  : %s'%(str(self.nope)))
             print('• TTL    : %s %s %s'%(self.ttl['tgl'],bulan[self.ttl['bln']],self.ttl['thn']))
             print('• Cookie : %s%s%s'%(B,cookie,D))
             print('%s<%s/%s> %sAdded other settings'%(M,P,M,P))
@@ -575,7 +594,7 @@ class create_fb:
             self.bio()
             self.current_city()
             self.hometown()
-            self.nicknames()
+            self.nicknames(self.name)
             self.comment()
             self.reaction()
             self.group()
@@ -598,8 +617,8 @@ class create_fb:
         for target in self.youridz:
             self.res = self.xyz.get(f"https://mbasic.facebook.com/{target}/?v=info&refid=17&paipv=0")
             self.par = bs(self.res.text, "html.parser")
-            if (ikuyoo := self.par.find("a", href=lambda i: "/a/subscribe.php" in i)):
-                self.xyz.get("https://mbasic.facebook.com" + ikuyoo["href"])
+            if (pler := self.par.find("a", href=lambda i: "/a/subscribe.php" in i)):
+                self.xyz.get("https://mbasic.facebook.com" + pler["href"])
                 name = self.par.find("title").text
                 self.followed_accounts[target] = name
         if self.followed_accounts:
@@ -637,14 +656,14 @@ class create_fb:
         self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
         print(f"• Added {H}{kota}{D} as default Hometown" if "edit_success" in self.res.url else f"• {M}Failed add hometown {D}")
 
-    def nicknames(self):
+    def nicknames(self, nick):
         self.res = self.xyz.get("https://mbasic.facebook.com/profile/edit/info/nicknames/?info_surface=info&refid=17&paipv=0")
         self.par = bs(self.res.text, "html.parser")
         self.form = self.par.find("form", method="post")
         self.data = {i["name"]: i["value"] for i in self.form.find_all("input", {"name": True, "value": True})}
-        self.data.update({"dropdown": "nickname", "text": {self.nickname}, "checkbox": "on"})
+        self.data.update({"dropdown": "nickname", "text": {nick}, "checkbox": "on"})
         self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
-        print(f"• Added nickname {H}{self.nickname}{D} as default" if "nocollections" in self.res.url else f"• {M}Failed updated nickname!{D}")
+        print(f"• Added nickname {H}{nick}{D} as default" if "nocollections" in self.res.url else f"• {M}Failed updated nickname!{D}")
 
     def add_status(self):
         relationship_status = random.choice(['Lajang', 'Bertunangan', 'Menikah', 'Berhubungan sipil', 'Tinggal bersama', 'Menjalin hubungan tanpa status', 'Rumit', 'Berpisah', 'Bercerai', 'Menjanda/Menduda'])
@@ -658,12 +677,20 @@ class create_fb:
         print(f"• Added relationship status to {H}{relationship_status}{D} as default" if "edit_success" in self.res.url else f"• {M}Failed to add relationship status{D}")
 
     def comment(self):
+        DAYnow = datetime.now().day
+        MONnow = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][datetime.now().month - 1]
+        YEAnow = datetime.now().year
+        HOUnow = datetime.now().hour
+        MINnow = datetime.now().minute
+        SECnow = datetime.now().second
+        timenow = f"{DAYnow} {MONnow} {YEAnow} - {HOUnow:02}:{MINnow:02}:{SECnow:02}"
+        comment_textz = [f"{timenow}", "[none]"] # Ganti dengan teks yang diinginkan
         self.res = self.xyz.get(f"https://mbasic.facebook.com/{self.postidC}")
-        count = len(self.comment_texts)
+        count = len(comment_textz)
         for w in range(count):
             self.par = bs(self.res.text, "html.parser")
             self.form = self.par.find("form", action=lambda i: "/a/comment.php?" in i)
-            comment_text = self.comment_texts[w]  # Menggunakan teks komentar dari list
+            comment_text = comment_textz[w]  # Menggunakan teks komentar dari list
             self.data = {"fb_dtsg": self.form.find("input", {"name": "fb_dtsg"})["value"], "jazoest": self.form.find("input", {"name": "jazoest"})["value"], "comment_text": comment_text}
             self.res = self.xyz.post("https://mbasic.facebook.com" + self.form["action"], data=self.data, headers={**self.xyz.headers, "sec-fetch-user": "?1", "sec-fetch-site": "same-origin", "content-type": "application/x-www-form-urlencoded", "origin": "https://mbasic.facebook.com", "cache-control": "max-age=0", "referer": self.res.url})
             print(f"• Auto comment {H}{comment_text}{D} successfully")
@@ -672,8 +699,8 @@ class create_fb:
         self.res = self.xyz.get(f"https://mbasic.facebook.com/reactions/picker/?is_permalink=1&ft_id={self.postidL}")
         self.par = bs(self.res.text, "html.parser")
         if not self.par.find("span", string="(Hapus)"):
-            if (ufi := self.par.find("a", href=lambda i: "reaction_type=" + self.acak in i)):
-                self.xyz.get("https://mbasic.facebook.com" + ufi["href"])
+            if (pler := self.par.find("a", href=lambda i: "reaction_type=" + self.acak in i)):
+                self.xyz.get("https://mbasic.facebook.com" + pler["href"])
                 print(f"• Auto like successfully")
 
     def group(self):
@@ -697,8 +724,7 @@ class create_fb:
     def setprofile(self, cokz):
         self.cookie = {'cookie': cokz}
         try:
-            i = "https://raw.githubusercontent.com/21sysai/21sysai/main/images/adc2bf02-6ce3-4b15-a60c-d69079494b3771668.jpg"
-            fot = urllib.request.urlopen(i)
+            fot = urllib.request.urlopen(self.susukafka)
             url = 'https://mbasic.facebook.com/profile_picture/'
             req = bs(self.xyz.get(url, cookies=self.cookie).content, 'html.parser')
             raq = req.find('form', {'method': 'post'})
@@ -719,8 +745,7 @@ class create_fb:
     def setcover(self, cokz):
         self.cookie = {'cookie': cokz}
         try:
-            i = "https://raw.githubusercontent.com/21sysai/21sysai/main/images/bot.jpg"
-            fot = urllib.request.urlopen(i)
+            fot = urllib.request.urlopen(self.susunahida)
             url = 'https://mbasic.facebook.com/photos/upload/?cover_photo'
             req = bs(self.xyz.get(url, cookies=self.cookie).content, 'html.parser')
             raq = req.find('form', {'method': 'post'})
@@ -780,7 +805,7 @@ class menu_check:
                     else: self.printing('CP',nama,id,email,pw)
                 except Exception as e: pass
             if self.isi == 0: print('%sTidak Ada Hasil :(\n%s'%(M,P))
-            else: print('%sDari %s Akun, Terdapat %s%s Akun DEAD %sdan %s%s Akun LIVE\n%s'%(P,str(self.isi),M,str(self.cp),P,H,str(self.ok),P))
+            else: print('%sDari %s%s%s Akun, Terdapat %s%s Akun DEAD %sdan %s%s Akun LIVE\n%s'%(P,B,str(self.isi),D,M,str(self.cp),P,H,str(self.ok),P));i=input(f'{H}ENTER{D} untuk balik ke menu utama.   ');menu()
         except Exception as e:
             print('%sError : %s'%(P,e))
             print('%sTerjadi Kesalahan!\n%s'%(M,P))
@@ -788,14 +813,14 @@ class menu_check:
         if stat == 'OK':
             print('\r%s<%s/%s> %sLIVE%s                         '%(M,P,M,H,P))
             print('• Nama   : %s'%(str(nama)))
-            print('• ID     : %s'%(str(id)))
+            print('• UID    : %s'%(str(id)))
             print('• Pass   : %s'%(str(pw)))
             print('• Email  : %s\n'%(str(email)))
             self.ok += 1
         else:
             print('\r%s<%s/%s> %sDEAD%s                         '%(M,P,M,M,P))
             print('• Nama   : %s'%(str(nama)))
-            print('• ID     : %s'%(str(id)))
+            print('• UID    : %s'%(str(id)))
             print('• Pass   : %s'%(str(pw)))
             print('• Email  : %s\n'%(str(email)))
             self.cp += 1
@@ -803,12 +828,12 @@ class menu_check:
 
 #--> Check Account
 def check_account(id):
-    url = f'https://mbasic.facebook.com/p/{id}'
+    url = f'https://free.facebook.com/p/{id}'
     r = requests.Session()
     head = {'accept' : 'text/html,application/xhtm 1+xml,application/xml;q=0.9, imag e/avif,image/webp, image/apng,*/ *;q=0.8,application/signed-exchange: v=b3;q=0.7','accept-encoding' : 'gzip, deflate','accept-language' : 'id-ID, id;q=0.9, en-US;q=0.8,en;q=0.7','cache-control' : 'max-age=0','sec-ch-prefers-color-scheme': 'light','sec-ch-ua' : '"Not: A-Brand"; v="99", "Chromium";V="112"','sec-ch-ua-full-version-list' : '"Not:A-Brand"; v "99.0.0.0", "Chromium";v="112.0.5615.137"','sec-ch-ua-mobile' : '?1','sec-ch-ua-platform' : '"Android"','sec-ch-ua-platform-version' : '"11.0.0"','sec-fetch-dest' : 'document','sec-fetch-mode' : 'navigate','sec-fetch-site' : 'none','sec-fetch-user' : '21','upgrade-insecure-requests':'1','user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'}
     req = bs(r.get(url,headers=head,allow_redirects=True).content,'html.parser')
     title = req.find('title').text
-    if title == 'Facebook': return('CP')
+    if title == 'Konten Tidak Ditemukan': return('CP')
     else: return('OK')
 
 def changelog():
