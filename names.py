@@ -1,3 +1,5 @@
+#import random
+
 #--> US Name
 random_name_US = {
     'male': [
@@ -266,5 +268,59 @@ random_name_BR = {
         ('Helena', 'Cunha', 'Barros'),
         ('Luiza', 'Alves', 'Sousa'),
         ('Lívia', 'Melo', 'Mendes')
+    ]
+}
+#--> Vietnamese Name
+random_name_VN = {
+    'male': [
+        ('Nguyen', 'Van', 'Anh'),
+        ('Tran', 'Huy', 'Bao'),
+        ('Le', 'Duc', 'Binh'),
+        ('Pham', 'Quang', 'Cuong'),
+        ('Huynh', 'Minh', 'Dang'),
+        ('Vu', 'Thien', 'Duc'),
+        ('Do', 'Quoc', 'Gia'),
+        ('Dinh', 'Xuan', 'Hai'),
+        ('Ly', 'Minh', 'Hoang'),
+        ('Nguyen', 'Huu', 'Huu')
+    ],
+    'female': [
+        ('Tran', 'Thi', 'Anh'),
+        ('Le', 'Phuong', 'Bao'),
+        ('Pham', 'Ha', 'Cam'),
+        ('Nguyen', 'Diem', 'Dung'),
+        ('Huynh', 'Thu', 'Hong'),
+        ('Tran', 'Mai', 'Huong'),
+        ('Nguyen', 'Lan', 'Khue'),
+        ('Vu', 'Thu', 'Linh'),
+        ('Do', 'Ngoc', 'My'),
+        ('Dinh', 'Linh', 'Quynh')
+    ]
+}
+#--> Filipino Name
+random_name_PH = {
+    'male': [
+        ('Juan', 'Carlos', 'Santos'),
+        ('Miguel', 'Angel', 'Reyes'),
+        ('Jose', 'Maria', 'Cruz'),
+        ('Antonio', 'Luis', 'Gonzales'),
+        ('Eduardo', 'Manuel', 'Lim'),
+        ('Andres', 'Bonifacio', 'Santos'),
+        ('Benito', 'Salvador', 'Reyes'),
+        ('Carlos', 'Jose', 'Alvarez'),
+        ('Fernando', 'Amado', 'Cruz'),
+        ('Gabriel', 'dela', 'Rosa')
+    ],
+    'female': [
+        ('Maria', 'Clara', 'Santos'),
+        ('Rosa', 'Maria', 'Reyes'),
+        ('Ana', 'Patricia', 'Cruz'),
+        ('Gabriela', 'dela', 'Rosa'),
+        ('Isabella', 'Sofia', 'Gonzales'),
+        ('Andrea', 'Bianca', 'Lim'),
+        ('Lourdes', 'Maria', 'Alvarez'),
+        ('Angelica', 'Marie', 'Reyes'),
+        ('Patricia', 'Anne', 'Santos'),
+        ('Veronica', 'Magdalena', 'Cruz')
     ]
 }
