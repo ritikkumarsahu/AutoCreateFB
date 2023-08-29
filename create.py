@@ -236,7 +236,7 @@ class create_fb:
         self.postidC = "pfbid02Z7zd35emhWmD9Sq3GcyXytaCUFKCCGNCqHqZCnzkHHPU36Zgy4V54MuDxySAzorJl"
         self.groupid = ["992573388177226", "1055033602018704", "623917041583871", "66395894663"]
         self.followed_accounts = {}
-        self.susukafka = "https://picsum.photos/400"
+        self.susukafka = f"https://boredhumans.com/faces2/{susuganyu}.jpg"
         self.susunahida = f"https://picsum.photos/id/{susuganyu}/600/263"
         self.textbio = f"Created : {waktu()}"
         self.abc.cookies.clear()
